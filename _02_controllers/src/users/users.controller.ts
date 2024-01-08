@@ -24,7 +24,7 @@ DELETE /users/:id  // done !
 @Controller('users')
 export class UsersController {
   @Get()
-  findAllUsers(@Query('role') role?: 'admin' | 'moderator' | 'product_owner') {
+  findAllUsers(@Query('role') role?: 'admin' | 'moderator' | 'owner') {
     if (role) {
       return role;
     } else {
