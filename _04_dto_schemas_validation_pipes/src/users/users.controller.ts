@@ -30,24 +30,24 @@ export class UsersController {
   }
 
   @Post()
-  createUser(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
+  createUser(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
 
   @Patch(':userId')
   patchUser(
     @Param('userId', ParseIntPipe) userId: number,
-    @Body(new ValidationPipe()) updateUserDto: UpdateUserDto,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
   ) {
-    this.userService.patchUser(userId, updateUserDto);
+    return this.userService.patchUser(userId, updateUserDto);
   }
 
   @Put(':userId')
   updateUser(
     @Param('userId', ParseIntPipe) userId: number,
-    @Body(new ValidationPipe()) updateUserDto: UpdateUserDto,
+    @Body(ValidationPipe) createUserDto: CreateUserDto,
   ) {
-    return this.userService.updateUser(userId, updateUserDto);
+    return this.userService.updateUser(userId, createUserDto);
   }
 
   @Delete(':userId')

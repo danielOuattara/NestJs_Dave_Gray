@@ -9,5 +9,6 @@ export class CreateUserDto {
   email: string;
 
   @IsEnum(['INTERN', 'ENGINEER', 'ADMIN'])
+  // @IsEnum([{ INTERN: 'INTERN', ENGINEER: 'ENGINEER', ADMIN: 'ADMIN' }]) // ???
   role: string;
 }
