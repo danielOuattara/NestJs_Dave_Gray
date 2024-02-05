@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
@@ -67,6 +67,11 @@ export class UsersService {
       (user) => user.userId === parseInt(userId),
     );
 
+    if (userIndexToPatch === -1) {
+      console.log(' user Not found !');
+      throw new NotFoundException();
+    }
+
     this.users[userIndexToPatch] = { ...this.users[userIndexToPatch], ...user };
     return this.findOneUser(userId);
   }
@@ -79,11 +84,16 @@ export class UsersService {
       role: 'ADMIN' | 'INTERN' | 'ENGINEER';
     },
   ) {
-    const userIndexToPatch = this.users.findIndex(
+    const userIndexToUpdate = this.users.findIndex(
       (user) => user.userId === parseInt(userId),
     );
 
-    this.users[userIndexToPatch] = { userId: parseInt(userId), ...user };
+    if (userIndexToUpdate === -1) {
+      console.log(' user Not found !');
+      throw new NotFoundException();
+    }
+
+    this.users[userIndexToUpdate] = { userId: parseInt(userId), ...user };
     return this.findOneUser(userId);
   }
 
@@ -91,6 +101,10 @@ export class UsersService {
     const userIndexToDelete = this.users.findIndex(
       (user) => user.userId === parseInt(userId),
     );
+    if (userIndexToDelete === -1) {
+      console.log(' user Not found !');
+      throw new NotFoundException();
+    }
     this.users.splice(userIndexToDelete, 1);
     return this.users;
   }

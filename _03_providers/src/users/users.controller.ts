@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 
 /* 
 GET /users  // done !
-GET /users?role=value&country=china  // 
+GET /users?role=value&country=china  // done !
 GET /users/:id  // done !
 POST /users  // done !
 PATCH /users/:id  // done !
@@ -58,7 +58,7 @@ export class UsersController {
       role: 'ADMIN' | 'INTERN' | 'ENGINEER';
     }>,
   ) {
-    this.userService.patchOneUser(userId, user);
+    return this.userService.patchOneUser(userId, user);
   }
 
   @Put(':userId')
