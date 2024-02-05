@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, ROLE } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { usersData } from './user-data';
 
@@ -7,7 +7,8 @@ import { usersData } from './user-data';
 export class UsersService {
   private users = usersData;
 
-  findAllUsers(role?: 'ADMIN' | 'INTERN' | 'ENGINEER') {
+  // findAllUsers(role?: 'ADMIN' | 'INTERN' | 'ENGINEER') {
+  findAllUsers(role?: ROLE) {
     if (role) {
       const roleList = this.users.filter((user) => user.role === role);
       if (roleList.length === 0) {
@@ -57,7 +58,7 @@ export class UsersService {
     );
 
     if (userIndexToUpdate === -1) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     this.users[userIndexToUpdate] = {
