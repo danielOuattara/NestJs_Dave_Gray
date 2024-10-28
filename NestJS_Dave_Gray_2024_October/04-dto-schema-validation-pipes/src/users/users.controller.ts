@@ -8,8 +8,13 @@ import {
   Put,
   Delete,
   Query,
+  ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto, ROLE } from './dto/create-user.dto';
+import { PatchUserDto } from './dto/patch-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 /* 
 GET /users  
@@ -26,7 +31,7 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
-  findAllUsers(@Query('role') role?: 'ADMIN' | 'INTERN' | 'ENGINEER') {
+  findAllUsers(@Query('role') role?: string) {
     return this.userService.findAllUsers(role);
   }
 
@@ -36,50 +41,38 @@ export class UsersController {
   }
 
   @Get(':userId')
-  findOneUser(@Param('userId') userId: string) {
+  findOneUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.findOneUser(userId);
   }
 
   @Post()
   createUser(
-    @Body()
-    user: {
-      name: string;
-      email: string;
-      role: 'ADMIN' | 'INTERN' | 'ENGINEER';
-    },
+    @Body(ValidationPipe)
+    createUserDto: CreateUserDto,
   ) {
-    return this.userService.createUser(user);
+    return this.userService.createUser(createUserDto);
   }
 
   @Patch(':userId')
   patchOneUser(
-    @Param('userId') userId: string,
-    @Body()
-    userData: Partial<{
-      name: string;
-      email: string;
-      role: 'ADMIN' | 'INTERN' | 'ENGINEER';
-    }>,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body(ValidationPipe)
+    updateUserDto: PatchUserDto,
   ) {
-    return this.userService.patchOneUser(userId, userData);
+    return this.userService.patchOneUser(userId, updateUserDto);
   }
 
   @Put(':userId')
   updateOneUser(
-    @Param('userId') userId: string,
-    @Body()
-    userData: {
-      name: string;
-      email: string;
-      role: 'ADMIN' | 'INTERN' | 'ENGINEER';
-    },
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body(ValidationPipe)
+    createUserDto: UpdateUserDto,
   ) {
-    return { userId, ...userData };
+    return this.userService.updateOneUser(userId, createUserDto);
   }
 
   @Delete(':userId')
-  deleteOneUser(@Param('userId') userId: string) {
+  deleteOneUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.deleteOneUser(userId);
   }
 }
