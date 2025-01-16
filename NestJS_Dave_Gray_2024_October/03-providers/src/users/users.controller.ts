@@ -75,7 +75,7 @@ export class UsersController {
       role: 'ADMIN' | 'INTERN' | 'ENGINEER';
     },
   ) {
-    return { userId, ...userData };
+    return this.userService.updateOneUser(userId, userData);
   }
 
   @Delete(':userId')
