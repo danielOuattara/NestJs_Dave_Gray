@@ -32,7 +32,7 @@ export class UsersController {
     }
   }
 
-  @Get('intern')
+  @Get('interns')
   findAllInterns() {
     return 'all interns';
   }
